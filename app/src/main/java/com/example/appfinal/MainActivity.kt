@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ProductoActivity::class.java)
             intent.putExtra("producto", listaProductos[position])
             startActivity(intent)
-
+        }
+        add_fab.setOnClickListener{
 
         }
     }
