@@ -32,5 +32,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, NuevoProducto::class.java)
             startActivity(intent)
         }
+
     }
 }
