@@ -3,6 +3,7 @@ package com.example.appfinal
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -10,22 +11,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val producto = Producto("Libreta", 100.0, "libreta taquigrafica")
-        val producto2 = Producto("Pegamento", 1000.0, "Pegamento Blanco Smarty")
+        var listaProductos = emptyList<Producto>()
 
-        val listaProductos = listOf(producto, producto2)
+        val dataBase = AppDataBase.getDatabase(this)
 
-        val adapter = ProductosAdapter(this, listaProductos)
+        dataBase.productosDao().getAll().observe(this, Observer {
+            listaProductos = it
 
-        lista.adapter = adapter
+            val adapter = ProductosAdapter(this, listaProductos)
+
+            lista.adapter = adapter
+        })
 
         lista.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(this, ProductoActivity::class.java)
-            intent.putExtra("producto", listaProductos[position])
+            intent.putExtra("id", listaProductos[position].idProducto)
             startActivity(intent)
         }
         add_fab.setOnClickListener{
-
+            val intent = Intent(this, NuevoProducto::class.java)
+            startActivity(intent)
         }
     }
 }
